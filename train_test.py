@@ -7,6 +7,8 @@ import tensorflow as tf
 from code_models.custom_code_models.standard_CNN import StandardCNN as b_cnn
 from code_models.custom_code_models.standard_MLP import StandardMLP as b_mlp
 from code_models.custom_code_models.custom_CNN import CustomCNN as c_cnn
+from code_models.custom_code_models.FCNN import FCNN
+from code_models.custom_code_models.FAB_CONVNET import FAB_CONVNET
 
 from utils import config
 import time
@@ -24,7 +26,7 @@ def parse_args():
                                                                           'STANDARD_MLP', 'CUSTOM_CNN', 'VGG16',
                                                                           'VGG19', 'Inception', 'ResNet50',
                                                                           'MobileNet', 'DenseNet', 'EfficientNet',
-                                                                          'QCNN'],
+                                                                          'QCNN', 'FCNN', 'FAB_CONVNET'],
                        help='Choose the model to use between the ones implemented')
     group.add_argument('-d', '--dataset', required=True, type=str,
                        help='the dataset path, must have the folder structure: training/train, training/val and test,'
@@ -105,6 +107,10 @@ def _model_selection(model_choice, nclasses):
     mod_class = None
     if model_choice == "STANDARD_CNN":
         mod_class = b_cnn(nclasses, config.IMG_DIM, config.CHANNELS, learning_rate=config.LEARNING_RATE)
+    if model_choice == "FCNN":
+        mod_class = FCNN(nclasses, config.IMG_DIM, config.CHANNELS, learning_rate=config.LEARNING_RATE)
+    if model_choice == "FAB_CONVNET":
+        mod_class = FAB_CONVNET(nclasses, config.IMG_DIM, config.CHANNELS, learning_rate=config.LEARNING_RATE)
     elif model_choice == "CUSTOM_CNN":
         mod_class = c_cnn(nclasses, config.IMG_DIM, config.CHANNELS, learning_rate=config.LEARNING_RATE)
     elif model_choice == "STANDARD_MLP":
